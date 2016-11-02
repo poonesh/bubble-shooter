@@ -141,15 +141,14 @@ class Bubble(object):
 
      	
   	def build_adj_dict(self, Set):
-		
-        if len(Set):
+
+  		if len(Set):
 
   			for bubble in Set:	
   				
-  				print dist(bubble.Bubble_last_pos, self.Bubble_last_pos) 
-  				print str(bubble.color)
+  				
   				distance = dist(bubble.Bubble_last_pos, self.Bubble_last_pos)
-  				print "distance", distance 
+  				 
 
   				if  distance <= (bubble.Bubble_radius + self.Bubble_radius):
   					
