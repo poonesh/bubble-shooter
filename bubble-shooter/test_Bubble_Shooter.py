@@ -106,7 +106,7 @@ class Bubble_Shooter_Test(unittest.TestCase):
 		
 
 		self.assertEqual(len(result), len(expected))
-		self.assertTrue("yellow" not in result)
+		
 
 
 
