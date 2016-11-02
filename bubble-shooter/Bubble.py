@@ -14,15 +14,17 @@ def ang_to_vec(ang):
 
 class Bubble(object):
 	
-	def __init__(self, TK_pic):
+	def __init__(self, TK_pic, color=None):
 		self.tk_pic = TK_pic
 		self.Bubble_radius = 15
 		self.Bubble_vel = [0, 0]
 		self.Bubble_initial_pos = list([self.tk_pic.width/2, self.tk_pic.height])
+		self.Bubble_last_pos = [0, 0]
 		self.canv_width = 600
 		self.canv_height = 600
 		self.grid_width = 2*self.Bubble_radius
 		self.grid_height = 2*self.Bubble_radius
+		self.adj_dict = {}
 
 
 		self.x0 = self.Bubble_initial_pos[0] - self.Bubble_radius
@@ -30,8 +32,12 @@ class Bubble(object):
 		self.x1 = self.Bubble_initial_pos[0] + self.Bubble_radius
 		self.y1 = self.Bubble_initial_pos[1] + self.Bubble_radius 
 
-		color_list = ["#6b8e23", "#ffd700", "#ff4500", "#f0fff0", "#0000cd"] 
-		self.color = random.choice(color_list)
+		
+		if color is None:
+			color_list = ["#6b8e23", "#ffd700", "#ff4500", "#f0fff0", "#0000cd"] 
+			self.color = random.choice(color_list)
+		else:
+			self.color = color
 		
 
 
@@ -46,6 +52,7 @@ class Bubble(object):
 
 	
 
+	
 	def update_Bubble(self):
 		
 		self.Bubble_initial_pos[0] += self.Bubble_vel[0]
@@ -57,15 +64,18 @@ class Bubble(object):
 		self.y1 = self.Bubble_initial_pos[1] + self.Bubble_radius 
 
 		self.tk_pic.coords(self.Bubble_index, self.x0, self.y0, self.x1, self.y1)
-		
 
 
+
+	
 	def check_boundary(self):
 		if self.Bubble_initial_pos[0] <= self.Bubble_radius or self.Bubble_initial_pos[0] >= self.tk_pic.width - self.Bubble_radius:
 			self.Bubble_vel[0] = -self.Bubble_vel[0]
 
 
 
+	
+	
 	def is_stuck(self, Set, list_of_grids):
 	
 		if self.Bubble_initial_pos[1] <= self.Bubble_radius:
@@ -120,27 +130,39 @@ class Bubble(object):
   		self_pos[0] = point[0]
   		self_pos[1] = point[1]
 
+  		self.Bubble_last_pos = [point[0], point[1]]
+
+
+
+
+  	def last_position(self):
+  		return self.Bubble_last_pos
 
 
      	
+  	def build_adj_dict(self, Set):
+		
+        if len(Set):
 
+  			for bubble in Set:	
+  				
+  				print dist(bubble.Bubble_last_pos, self.Bubble_last_pos) 
+  				print str(bubble.color)
+  				distance = dist(bubble.Bubble_last_pos, self.Bubble_last_pos)
+  				print "distance", distance 
 
+  				if  distance <= (bubble.Bubble_radius + self.Bubble_radius):
+  					
+  					if bubble.color not in self.adj_dict:
+  						self.adj_dict[bubble.color] = []
+					self.adj_dict.setdefault(bubble.color,[]).append(bubble)
+					
+					if self.color not in bubble.adj_dict: 
+						bubble.adj_dict[self.color] = []
+					bubble.adj_dict.setdefault(self.color,[]).append(self)
+					
 
+		return self.adj_dict
+					
 
 	
-
-	
-
-
-
-	
-
-
-
-
-
-
-
-
-
-

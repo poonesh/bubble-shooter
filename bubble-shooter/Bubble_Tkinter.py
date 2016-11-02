@@ -24,7 +24,7 @@ class TKPICTURE(object):
 
 	
 	# updating every frame
-	def render_loop(self, func2call_1, func2call_2):
+	def render_loop(self, func2call_1, func2call_2, func2call_3):
 		
 		while True:
 
@@ -33,7 +33,11 @@ class TKPICTURE(object):
 				shape.update_Bubble()
 				shape.check_boundary()
 				func2call_1()
+			if func2call_1():
+				func2call_3()
+
 			func2call_2()
+
 					
 			self.master.update()
 
@@ -74,13 +78,6 @@ class TKPICTURE(object):
 	# binding Up_arrow
 	def up_arrow(self, shoot_Bubble):
 		return self.canvas.bind("<Up>", shoot_Bubble)
-
-	
-	# binding space
-	def space_button(self, load_Bubble):
-		return self.canvas.bind("<space>", load_Bubble)
-
-
 
 
 

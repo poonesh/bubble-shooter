@@ -50,39 +50,44 @@ def shoot_Bubble(event):
 	next_bubble.fire_Bubble(10, line_shoot.firing_angle)
 	last_bubble = next_bubble
  	next_bubble = None
+ 	
 
 
 
- 
 def last_bubble_stuck(): 
 	global last_bubble
 	if last_bubble is not None:
 		# print len(stuck_balls) 
-		return last_bubble.is_stuck(stuck_balls, list_of_grids)
+		if last_bubble.is_stuck(stuck_balls, list_of_grids):
+			last_bubble.build_adj_dict(stuck_balls)
+			return True
 		
 	return False
 
 
 
 
-def load_Bubble(event):
+def load_Bubble():
 	global next_bubble, last_bubble
 	if last_bubble_stuck() and next_bubble == None:
 		next_bubble = Bubble(tk_canvas)
 
 
 
-
+# def build_adjacent_dict(): # why load bubble did not work if I put build dict in the line before next_bubble = 0.
+# 	global next_bubble, last_bubble
+# 		last_bubble.build_adj_dict(stuck_balls)
+		
+	
 
 
 tk_canvas.canvas.focus_set()
-tk_canvas.space_button(load_Bubble)
 tk_canvas.up_arrow(shoot_Bubble)
 tk_canvas.right_arrow_press(update_line_vel_right_press)
 tk_canvas.left_arrow_press(update_line_vel_left_press)
 tk_canvas.right_arrow_release(update_line_vel_right_release)
 tk_canvas.left_arrow_release(update_line_vel_left_release)
-tk_canvas.render_loop(last_bubble_stuck, update_line) 
+tk_canvas.render_loop(last_bubble_stuck, update_line, load_Bubble) 
 
 
 
