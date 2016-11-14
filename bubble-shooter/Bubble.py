@@ -45,11 +45,15 @@ class Bubble(object):
 		self.tk_pic.shapesBubble[self.Bubble_index] = self
 
 
+	
 	# calculating velocity in the updated direction 
 	def fire_Bubble(self, vel, firing_angle):
+
 		vec = ang_to_vec(firing_angle)
 		self.Bubble_vel = [vel*vec[0], vel*vec[1]]
 
+	
+	
 	
 	def update_Bubble(self):
 		
@@ -64,12 +68,17 @@ class Bubble(object):
 		self.tk_pic.coords(self.Bubble_index, self.x0, self.y0, self.x1, self.y1)
 
 
+
+
 	def check_boundary(self):
+
 		if self.Bubble_initial_pos[0] <= self.Bubble_radius or self.Bubble_initial_pos[0] >= self.tk_pic.width - self.Bubble_radius:
 			self.Bubble_vel[0] = -self.Bubble_vel[0]
 
 
 	
+	
+
 	def is_stuck(self, Set, list_of_grids):
 	
 		if self.Bubble_initial_pos[1] <= self.Bubble_radius:
@@ -88,6 +97,9 @@ class Bubble(object):
 		return False
 
 
+	
+
+	
 	def make_grid(self):
 
 		init_grid = (self.grid_width//2, self.grid_height//2)
@@ -102,6 +114,9 @@ class Bubble(object):
 					grid_list.append((grid_list[-1][0]+(self.grid_width//2), init_grid[1]+j*self.grid_height))
 
 		return grid_list
+
+
+	
 
 
 	def min_dist_grid(self, list_of_grids, self_pos): 
@@ -122,11 +137,15 @@ class Bubble(object):
   		self.Bubble_last_pos = [point[0], point[1]]
 
 
+
   	def last_position(self):
+
   		return self.Bubble_last_pos
 
      	
-  	def build_adj_dict(self, Set):
+  	
+	
+	def build_adj_dict(self, Set):
 
   		if len(Set):
 
@@ -143,8 +162,23 @@ class Bubble(object):
 						bubble.adj_dict[self.color] = []
 					bubble.adj_dict.setdefault(self.color,[]).append(self)
 					
-
 		return self.adj_dict
-					
+
+
 
 	
+
+	def get_bubble_chain(self, same_color_chain_list):
+
+		if self.color in self.adj_dict.keys():
+			for bubble in self.adj_dict[self.color]:
+				if bubble not in same_color_chain_list:
+					same_color_chain_list.append(bubble) 
+					bubble.get_bubble_chain(same_color_chain_list)
+
+		
+
+
+
+
+
