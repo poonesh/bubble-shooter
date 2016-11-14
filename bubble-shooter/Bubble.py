@@ -75,8 +75,6 @@ class Bubble(object):
 		if self.Bubble_initial_pos[0] <= self.Bubble_radius or self.Bubble_initial_pos[0] >= self.tk_pic.width - self.Bubble_radius:
 			self.Bubble_vel[0] = -self.Bubble_vel[0]
 
-
-	
 	
 
 	def is_stuck(self, Set, list_of_grids):
@@ -98,8 +96,6 @@ class Bubble(object):
 
 
 	
-
-	
 	def make_grid(self):
 
 		init_grid = (self.grid_width//2, self.grid_height//2)
@@ -115,8 +111,6 @@ class Bubble(object):
 
 		return grid_list
 
-
-	
 
 
 	def min_dist_grid(self, list_of_grids, self_pos): 
@@ -152,16 +146,23 @@ class Bubble(object):
   			for bubble in Set:	
   				
   				distance = dist(bubble.Bubble_last_pos, self.Bubble_last_pos)
+  				print "distance", distance <= (bubble.Bubble_radius + self.Bubble_radius)
   				if  distance <= (bubble.Bubble_radius + self.Bubble_radius):
   					
-  					if bubble.color not in self.adj_dict:
-  						self.adj_dict[bubble.color] = []
-					self.adj_dict.setdefault(bubble.color,[]).append(bubble)
+  					if bubble.color not in self.adj_dict.keys():
+						self.adj_dict.setdefault(bubble.color,[]).append(bubble)
+					else:
+						if bubble not in self.adj_dict[bubble.color]:
+							self.adj_dict[bubble.color].append(bubble)
+
 					
-					if self.color not in bubble.adj_dict: 
-						bubble.adj_dict[self.color] = []
-					bubble.adj_dict.setdefault(self.color,[]).append(self)
+					if self.color not in bubble.adj_dict.keys(): 
+						bubble.adj_dict.setdefault(self.color,[]).append(self)
+					else:
+						if self not in bubble.adj_dict[self.color]:
+							bubble.adj_dict[self.color].append(self)
 					
+		
 		return self.adj_dict
 
 
@@ -171,10 +172,31 @@ class Bubble(object):
 	def get_bubble_chain(self, same_color_chain_list):
 
 		if self.color in self.adj_dict.keys():
+			print self.adj_dict
 			for bubble in self.adj_dict[self.color]:
 				if bubble not in same_color_chain_list:
 					same_color_chain_list.append(bubble) 
 					bubble.get_bubble_chain(same_color_chain_list)
+
+
+
+	
+	
+
+	def bubble_chain_delete(self, same_color_chain_list):
+
+		for bubble in self.adj_dict[self.color]:
+			if bubble in same_color_chain_list:
+				self.adj_dict[self.color].remove(bubble)
+				bubble.bubble_chain_delete(same_color_chain_list)
+
+		del same_color_chain_list[:]
+	
+
+
+
+
+
 
 		
 

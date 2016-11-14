@@ -9,7 +9,7 @@ from Bubble import Bubble
 tk_canvas = TKPICTURE(600, 600)
 line_shoot = LineShooter(tk_canvas)
 next_bubble = Bubble(tk_canvas)
-last_bubble = None
+last_bubble = None 
 stuck_balls = set([])
 list_of_grids = next_bubble.make_grid()
 
