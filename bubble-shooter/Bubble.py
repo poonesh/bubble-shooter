@@ -146,8 +146,7 @@ class Bubble(object):
   			for bubble in Set:	
   				
   				distance = dist(bubble.Bubble_last_pos, self.Bubble_last_pos)
-  				print "distance", distance <= (bubble.Bubble_radius + self.Bubble_radius)
-  				if  distance <= (bubble.Bubble_radius + self.Bubble_radius):
+  				if  distance <= (bubble.Bubble_radius * 1.2 + self.Bubble_radius * 1.2):
   					
   					if bubble.color not in self.adj_dict.keys():
 						self.adj_dict.setdefault(bubble.color,[]).append(bubble)
@@ -172,11 +171,11 @@ class Bubble(object):
 	def get_bubble_chain(self, same_color_chain_list):
 
 		if self.color in self.adj_dict.keys():
-			print self.adj_dict
 			for bubble in self.adj_dict[self.color]:
 				if bubble not in same_color_chain_list:
 					same_color_chain_list.append(bubble) 
 					bubble.get_bubble_chain(same_color_chain_list)
+		return same_color_chain_list
 
 
 

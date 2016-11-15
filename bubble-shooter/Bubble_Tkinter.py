@@ -24,7 +24,7 @@ class TKPICTURE(object):
 
 	
 	# updating every frame
-	def render_loop(self, func2call_1, func2call_2, func2call_3):
+	def render_loop(self, func2call_1, func2call_2):
 		
 		while True:
 
@@ -32,10 +32,7 @@ class TKPICTURE(object):
 				shape = self.shapesBubble[item]
 				shape.update_Bubble()
 				shape.check_boundary()
-				func2call_1()
-			if func2call_1():
-				func2call_3()
-
+			func2call_1()
 			func2call_2()
 
 					
@@ -45,6 +42,9 @@ class TKPICTURE(object):
 	# to update moving widget on canvas, we need to use coords or move (like canvas.coords(index_of_the_widget, x0, y0, x1, y1))
 	def coords(self, index, x0, y0, x1, y1): 
 		self.canvas.coords(index, x0, y0, x1, y1)
+
+	def delete_widget(self, widget):
+		self.canvas.delete(widget)
 
 
 	def create_oval(self, x0, y0, x1, y1, outline = "grey", fill = "red", width = 1):

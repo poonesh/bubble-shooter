@@ -118,17 +118,19 @@ class Bubble_Shooter_Test(unittest.TestCase):
 
 	# 	bubble_1.Bubble_last_pos = [100, 100]
 	# 	bubble_2.Bubble_last_pos = [100, 130]
-	# 	bubble_3.Bubble_last_pos = [115, 115]	
+	# 	bubble_3.Bubble_last_pos = [130, 130]	
 	
 
 	# 	get_stuck = set([bubble_1, bubble_3])
 	# 	result = bubble_2.build_adj_dict(get_stuck)
 	# 	expected = {}
-	# 	expected[bubble_1.color] = [bubble_2, bubble_3]
-
+	# 	expected[bubble_1.color] = [bubble_3, bubble_1]
+	
 		
 	# 	self.assertEqual(len(result), len(expected))
+	# 	self.assertTrue(result[bubble_1.color][0] is expected[bubble_1.color][0])
 	# 	self.assertTrue(result[bubble_1.color][1] is expected[bubble_1.color][1])
+
 
 
 
@@ -144,26 +146,21 @@ class Bubble_Shooter_Test(unittest.TestCase):
 	# 	bubble_2.Bubble_last_pos = [100, 130]
 	# 	bubble_3.Bubble_last_pos = [100, 160]
 
-	# 	get_stuck = set([bubble_2, bubble_3])
+	# 	get_stuck = set([bubble_1, bubble_2])
 
-	# 	bubble_1.adj_dict = bubble_1.build_adj_dict(get_stuck)
-	# 	print type(bubble_1.adj_dict)
-	# 	print bubble_1.adj_dict
+	# 	bubble_3.adj_dict = bubble_3.build_adj_dict(get_stuck)
+	# 	print type(bubble_3.adj_dict)
+	# 	print bubble_3.adj_dict
 
 
 	# 	same_color_chain_list = []
-	# 	bubble_1.get_bubble_chain(same_color_chain_list)
+	# 	bubble_3.get_bubble_chain(same_color_chain_list)
 	# 	print "same_color_chain_list", same_color_chain_list
 		
 
-	# 	expected = [bubble_1, bubble_2]
+	# 	expected = []
 	# 	self.assertEqual(len(expected), len(same_color_chain_list))
-	# 	self.assertTrue(expected[0] is same_color_chain_list[1])
-	# 	print expected[1]
-	# 	print same_color_chain_list[0]
-
-	# 	print expected[0]
-	# 	print same_color_chain_list[1]
+		
 
 
 
@@ -216,49 +213,56 @@ class Bubble_Shooter_Test(unittest.TestCase):
 		bubble_2 = Bubble(fake_tk_picture, color="blue")
 		bubble_3 = Bubble(fake_tk_picture, color="blue")
 	  	bubble_4 = Bubble(fake_tk_picture, color="red")
+	  	bubble_5 = Bubble(fake_tk_picture, color="red")
 
 
 		bubble_1.Bubble_last_pos = [100, 100]
 		bubble_2.Bubble_last_pos = [100, 130]
 		bubble_3.Bubble_last_pos = [130, 130]
 		bubble_4.Bubble_last_pos = [130, 100]
+		bubble_5.Bubble_last_pos = [130, 160]
 		
 
-		get_stuck = set([bubble_2, bubble_3, bubble_4])
+		get_stuck = set([])
 		bubble_1.adj_dict = bubble_1.build_adj_dict(get_stuck)
-		print "bubble_1_dict_1", bubble_1.adj_dict
+		# print "bubble_1_dict_1", bubble_1.adj_dict
 		
-		get_stuck_1 = set([bubble_1, bubble_3, bubble_4])
+		get_stuck_1 = set([bubble_1])
 		bubble_2.adj_dict = bubble_2.build_adj_dict(get_stuck_1)
-		print "bubble_1_dict_2", bubble_2.adj_dict
+		# print "bubble_1_dict_2", bubble_2.adj_dict
 		# print "bubble_2_dict", bubble_2.adj_dict
 
-		get_stuck_2 = set([bubble_1, bubble_2, bubble_4])
+		get_stuck_2 = set([bubble_1, bubble_2])
 		bubble_3.adj_dict = bubble_3.build_adj_dict(get_stuck_2)
-		print "bubble_3_dict", bubble_3.adj_dict
+		# print "bubble_3_dict", bubble_3.adj_dict
 
 		get_stuck_3 = set([bubble_1, bubble_2, bubble_3])
 		bubble_4.adj_dict = bubble_4.build_adj_dict(get_stuck_3)
-		print "bubble_4_dict", bubble_4.adj_dict
+		# print "bubble_4_dict", bubble_4.adj_dict
+
+		get_stuck_4 = set([bubble_1, bubble_2, bubble_3, bubble_4])
+		bubble_5.adj_dict = bubble_5.build_adj_dict(get_stuck_4)
+		# print "bubble_4_dict", bubble_5.adj_dict
 
 
 		same_color_chain_list = []
 		bubble_3.get_bubble_chain(same_color_chain_list)
 		
 
-		bubble_3.bubble_chain_delete(same_color_chain_list)
-		expected = {'blue':[], 'red':[bubble_4]}
+		
+		expected = {'blue':[bubble_2], 'red':[bubble_4, bubble_5]}
 
 		print "expected", expected
 		print "bubble_3.adj_dict", bubble_3.adj_dict
 		
 
-		self.assertEqual(expected['blue'], bubble_3.adj_dict['blue'])
-		self.assertEqual(expected['red'], bubble_3.adj_dict['red'])
-		self.assertEqual(expected, bubble_3.adj_dict)
+		self.assertEqual(expected['blue'][0], bubble_3.adj_dict['blue'][0])
 
+		self.assertEqual(len(expected['red']), len(bubble_3.adj_dict['red']))
 
-
+		self.assertTrue(bubble_4 in bubble_3.adj_dict['red'])
+		self.assertTrue(bubble_5 in bubble_3.adj_dict['red'])
+		#self.assertEqual(expected, bubble_3.adj_dict)
 
 
 if __name__ == '__main__':

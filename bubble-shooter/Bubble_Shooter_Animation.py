@@ -53,32 +53,48 @@ def shoot_Bubble(event):
  	
 
 
-
 def last_bubble_stuck(): 
 	global last_bubble
 	if last_bubble is not None:
-		# print len(stuck_balls) 
 		if last_bubble.is_stuck(stuck_balls, list_of_grids):
-			last_bubble.build_adj_dict(stuck_balls)
-			return True
-		
+			return True	
 	return False
 
 
 
+def make_adj_dict():
+	if last_bubble_stuck():
+		last_bubble.adj_dict = last_bubble.build_adj_dict(stuck_balls)
 
+
+
+def make_bubble_chain():
+	same_color_chain_list = []
+	chain_list = last_bubble.get_bubble_chain(same_color_chain_list)
+	print chain_list
+	print len(chain_list)
+	if len(chain_list) >= 3:
+		for bubble in chain_list:
+			tk_canvas.delete_widget(bubble.Bubble_index)
+			stuck_balls.remove(bubble)
+		last_bubble.bubble_chain_delete(same_color_chain_list)
+
+
+
+def renderHandler():
+	if last_bubble_stuck():
+		make_adj_dict()
+		make_bubble_chain()
+		load_Bubble()
+
+
+	
 def load_Bubble():
 	global next_bubble, last_bubble
-	if last_bubble_stuck() and next_bubble == None:
+	if next_bubble == None:
+		last_bubble = None
 		next_bubble = Bubble(tk_canvas)
 
-
-
-# def build_adjacent_dict(): # why load bubble did not work if I put build dict in the line before next_bubble = 0.
-# 	global next_bubble, last_bubble
-# 		last_bubble.build_adj_dict(stuck_balls)
-		
-	
 
 
 tk_canvas.canvas.focus_set()
@@ -87,10 +103,7 @@ tk_canvas.right_arrow_press(update_line_vel_right_press)
 tk_canvas.left_arrow_press(update_line_vel_left_press)
 tk_canvas.right_arrow_release(update_line_vel_right_release)
 tk_canvas.left_arrow_release(update_line_vel_left_release)
-tk_canvas.render_loop(last_bubble_stuck, update_line, load_Bubble) 
-
-
-
+tk_canvas.render_loop(renderHandler, update_line) 
 
 
 
