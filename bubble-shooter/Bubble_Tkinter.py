@@ -1,5 +1,6 @@
 
-from Tkinter import *
+from tkinter import *
+#from tkinter.messagebox import showinfo 
 
 
 """
@@ -13,6 +14,8 @@ class TKPICTURE(object):
 		self.width = width
 		self.height = height
 		self.canvas = Canvas(self.master, bg="black", width= self.width, height= self.height)
+		self.score = 0
+		self.current_score = self.canvas.create_text(80, 560, fill ="white", font="Times 20 italic bold", text="your score is: %d " % self.score )
 		self.canvas.pack()
 
 		self.shapesLine = {} 

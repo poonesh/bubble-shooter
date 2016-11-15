@@ -7,6 +7,7 @@ from Bubble import Bubble
 
 
 tk_canvas = TKPICTURE(600, 600)
+tk_canvas.score = 0
 line_shoot = LineShooter(tk_canvas)
 next_bubble = Bubble(tk_canvas)
 last_bubble = None 
@@ -71,21 +72,33 @@ def make_adj_dict():
 def make_bubble_chain():
 	same_color_chain_list = []
 	chain_list = last_bubble.get_bubble_chain(same_color_chain_list)
-	print chain_list
-	print len(chain_list)
+	
 	if len(chain_list) >= 3:
+		
 		for bubble in chain_list:
 			tk_canvas.delete_widget(bubble.Bubble_index)
 			stuck_balls.remove(bubble)
+			tk_canvas.score += 5
+			tk_canvas.canvas.itemconfig(tk_canvas.current_score, text="your score is : %d " %tk_canvas.score)
+
+			if tk_canvas.score >= 500:
+				tk_canvas.canvas.itemconfig(tk_canvas.current_score, font="Times 25 italic bold", text="You Win!!!!!" )
+				tk_canvas.render_loop(renderHandler, update_line)
+
 		last_bubble.bubble_chain_delete(same_color_chain_list)
 
 
 
 def renderHandler():
 	if last_bubble_stuck():
-		make_adj_dict()
-		make_bubble_chain()
-		load_Bubble()
+		[x, y] = last_bubble.last_position()
+		
+		if y >= 450:
+			tk_canvas.canvas.itemconfig(tk_canvas.current_score, font="Times 25 italic bold", text="You Lose!!!!!" )
+		else:
+			make_adj_dict()
+			make_bubble_chain()
+			load_Bubble()
 
 
 	
