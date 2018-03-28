@@ -16,7 +16,7 @@ class Bubble(object):
 	
 	def __init__(self, TK_pic, color=None):
 		self.tk_pic = TK_pic
-		self.Bubble_radius = 15
+		self.Bubble_radius = 30
 		self.Bubble_vel = [0, 0]
 		self.Bubble_initial_pos = list([self.tk_pic.width/2, self.tk_pic.height])
 		self.Bubble_last_pos = [0, 0]
@@ -191,13 +191,6 @@ class Bubble(object):
 
 		del same_color_chain_list[:]
 	
-
-
-
-
-
-
-		
 
 
 
