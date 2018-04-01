@@ -73,23 +73,3 @@ class LineShooter(object):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-
-
-

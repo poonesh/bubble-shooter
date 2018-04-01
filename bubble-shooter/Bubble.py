@@ -40,7 +40,7 @@ class Bubble(object):
 			self.color = color
 		
 
-
+		# create_oval takes two pairs of coordinates, top_left and bottom_right
 		self.Bubble_index = self.tk_pic.create_oval(self.x0, self.y0, self.x1 , self.y1, outline = "grey", fill = self.color, width = 2)                                        
 		self.tk_pic.shapesBubble[self.Bubble_index] = self
 
